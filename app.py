@@ -33,7 +33,7 @@ st.image("ESG/banner_esg2.png", use_container_width=True)
 
 
 
-genai.configure(api_key="AIzaSyCAIWGff4AT9aJw_dIw9mGAh5vuWWBy5C4")
+genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
 
 # ai = genai.GenerativeModel("models/gemini-3.1-flash-lite-preview")
 ai = genai.GenerativeModel("models/gemini-flash-lite-latest")
