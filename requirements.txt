@@ -17,6 +17,6 @@ scipy>=1.11
 transformers>=4.40
 torch>=2.2
 
-google-genai
+google-generativeai
 torchvision
 rapidfuzz
