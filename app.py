@@ -529,13 +529,13 @@ if run_button:
     current = start_date
     total_days = (end_date - start_date).days or 1
 
+    info_placeholder_status = st.empty()
+
     inner_area = st.empty()
 
     progress = st.progress(0)
 
     step = 0
-
-    info_placeholder_status = st.empty()
 
     while current <= end_date:
 
