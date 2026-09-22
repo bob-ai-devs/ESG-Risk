@@ -520,7 +520,7 @@ if run_button:
     info_placeholder = st.empty()
 
     if peer:
-        info_placeholder.info(f"Monitoring {entity_len} entity / entities: {", ".join(entities_copy)}\nand their peers (Total: {len(entities)}): {", ".join(peer_entities)}")
+        info_placeholder.info(f"Monitoring {entity_len} entity / entities: {", ".join(entities_copy)}\nand their peers (Total: {len(entities) - 1}): {", ".join(peer_entities)}")
     else:
         info_placeholder.info(f"Monitoring {entity_len} entity / entities: {", ".join(entities_copy)}")
 
