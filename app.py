@@ -520,9 +520,9 @@ if run_button:
     info_placeholder = st.empty()
 
     if peer:
-        info_placeholder.info(f"Monitoring {entity_len} entity / entities and their peers (Total: {len(entities)})")
+        info_placeholder.info(f"Monitoring {entity_len} entity / entities: {entities_copy}\nand their peers (Total: {len(entities)}): {peer_entities}")
     else:
-        info_placeholder.info(f"Monitoring {entity_len} entity / entities")
+        info_placeholder.info(f"Monitoring {entity_len} entity / entities: {entities_copy}")
 
     all_titles = []
 
