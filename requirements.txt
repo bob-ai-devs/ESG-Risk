@@ -21,3 +21,4 @@ google-generativeai
 torchvision
 rapidfuzz
 pytz
+scikit-learn
