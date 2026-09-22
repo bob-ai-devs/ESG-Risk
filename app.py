@@ -554,7 +554,7 @@ if run_button:
 
             inner_progress.progress((c+1)/len(entities))
 
-            info_placeholder_status.code(f"Fetching News for: {entity} Dated from: {current} - to: {week_end}")
+            info_placeholder_status.code(f"Fetching News for: {entity} Dated from: {current} to: {week_end}")
 
             # titles = fetch_week(entity, current, week_end, flag)
             titles = fetch_week(entity, current, week_end)
