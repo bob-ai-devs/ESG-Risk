@@ -20,3 +20,4 @@ torch>=2.2
 google-generativeai
 torchvision
 rapidfuzz
+pytz
