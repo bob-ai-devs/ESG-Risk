@@ -560,7 +560,7 @@ if run_button:
 
             all_titles.extend(titles)
 
-            time.sleep(0.5)
+            time.sleep(1)
 
         inner_progress.progress(0)
 
@@ -569,7 +569,7 @@ if run_button:
         step += 7
         progress.progress(min(step / total_days, 1.0))
 
-        time.sleep(0.2)
+        time.sleep(1)
 
     # remove progress bar
     inner_area.empty()
