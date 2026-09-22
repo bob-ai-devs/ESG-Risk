@@ -134,7 +134,7 @@ def get_sentiment_score(text):
     negative = probs[0][0].item()
     positive = probs[0][2].item()
 
-    clear_output()
+    # clear_output()
 
     score = positive - negative
 
@@ -170,7 +170,7 @@ def get_sentiment(df):
             if row["gov"] == 1:
                 df.at[idx, "gov"] = score
 
-    clear_output()
+    # clear_output()
     return df
 
 
