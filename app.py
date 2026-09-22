@@ -520,7 +520,7 @@ if run_button:
     info_placeholder = st.empty()
 
     if peer:
-        info_placeholder.info(f"Monitoring {entity_len} entity / entities: {", ".join(entities_copy)}\nand their peers (Total: {len(entities) - 1}): {", ".join(peer_entities)}")
+        info_placeholder.info(f"Monitoring {entity_len} entity / entities: {", ".join(entities_copy)} and their peers (Total: {len(entities) - 1}): {", ".join(peer_entities)}")
     else:
         info_placeholder.info(f"Monitoring {entity_len} entity / entities: {", ".join(entities_copy)}")
 
@@ -554,7 +554,7 @@ if run_button:
 
             inner_progress.progress((c+1)/len(entities))
 
-            info_placeholder_status.code(f"Fetching News for: {entity} Dated from: {current} to: {week_end}")
+            info_placeholder_status.code(f"Fetching News for: {entity} --- Dated from: {current} to: {week_end}")
 
             # titles = fetch_week(entity, current, week_end, flag)
             titles = fetch_week(entity, current, week_end)
