@@ -535,8 +535,7 @@ if run_button:
 
     step = 0
 
-
-
+    info_placeholder_status = st.empty()
 
     while current <= end_date:
 
@@ -554,6 +553,8 @@ if run_button:
             # for i, flag in enumerate(esg_keywords):
 
             inner_progress.progress((c+1)/len(entities))
+
+            info_placeholder_status.code(f"Fetching News for: {entity} Dated from: {current} - to: {week_end}")
 
             # titles = fetch_week(entity, current, week_end, flag)
             titles = fetch_week(entity, current, week_end)
@@ -573,6 +574,8 @@ if run_button:
 
     # remove progress bar
     inner_area.empty()
+
+    info_placeholder_status.empty()
 
     progress.progress(100)
 
