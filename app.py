@@ -1,4 +1,3 @@
-
 import streamlit as st
 import requests
 from bs4 import BeautifulSoup
@@ -7,7 +6,6 @@ import time
 import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
-from IPython.display import clear_output
 from urllib.parse import quote
 import os
 import torch
@@ -104,8 +102,6 @@ def load_model():
     # )
 
     model.eval()
-
-    clear_output()
 
     return tokenizer, model
 
