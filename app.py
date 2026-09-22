@@ -16,6 +16,10 @@ import re
 from rapidfuzz import fuzz
 import matplotlib.pyplot as plt
 
+import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
+
 import google.generativeai as genai
 from google.api_core import retry
 
@@ -332,43 +336,86 @@ with st.sidebar:
 # ==============================
 
 # @st.cache_data
-def fetch_week(entity, start_date, end_date, flag=''):
+# def fetch_week(entity, start_date, end_date, flag=''):
 
+#     search_query = f"{entity} after:{start_date} before:{end_date}"
+#     # search_query = f"{entity} {flag} after:{start_date} before:{end_date}"
+#     search_query = quote(search_query)
+#     url = f"https://news.google.com/rss/search?q={search_query}&hl=en-IN&gl=IN&ceid=IN:en"
+
+#     try:
+
+#         response = requests.get(url, timeout=10)
+#         soup = BeautifulSoup(response.content, "xml")
+#         items = soup.find_all("item")
+
+#         results = []
+
+#         for item in items:
+
+#             title = item.title.text.strip()
+#             pub_date = item.pubDate.text.strip()
+
+#             full_dt = datetime.strptime(
+#                 pub_date, "%a, %d %b %Y %H:%M:%S %Z"
+#             )
+
+#             pub_date = datetime(full_dt.year, full_dt.month, full_dt.day)
+
+#             results.append({
+#                 "title": title,
+#                 "published_date": pub_date,
+#                 "entity": entity
+#             })
+
+#         return results
+
+#     except:
+#         return []
+
+
+
+_session = requests.Session()
+_session.headers.update({
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                  "AppleWebKit/537.36 (KHTML, like Gecko) "
+                  "Chrome/124.0.0.0 Safari/537.36",
+    "Accept": "application/xml,text/xml,*/*",
+})
+_retries = Retry(total=3, backoff_factor=1.5, status_forcelist=[429, 500, 502, 503, 504])
+_session.mount("https://", HTTPAdapter(max_retries=_retries))
+
+
+def fetch_week(entity, start_date, end_date, flag=''):
     search_query = f"{entity} after:{start_date} before:{end_date}"
-    # search_query = f"{entity} {flag} after:{start_date} before:{end_date}"
     search_query = quote(search_query)
     url = f"https://news.google.com/rss/search?q={search_query}&hl=en-IN&gl=IN&ceid=IN:en"
 
     try:
+        response = _session.get(url, timeout=15)
+        response.raise_for_status()
 
-        response = requests.get(url, timeout=10)
         soup = BeautifulSoup(response.content, "xml")
         items = soup.find_all("item")
 
         results = []
-
         for item in items:
-
-            title = item.title.text.strip()
-            pub_date = item.pubDate.text.strip()
-
-            full_dt = datetime.strptime(
-                pub_date, "%a, %d %b %Y %H:%M:%S %Z"
-            )
-
-            pub_date = datetime(full_dt.year, full_dt.month, full_dt.day)
-
-            results.append({
-                "title": title,
-                "published_date": pub_date,
-                "entity": entity
-            })
+            try:
+                title = item.title.text.strip()
+                pub_date = item.pubDate.text.strip()
+                full_dt = datetime.strptime(pub_date, "%a, %d %b %Y %H:%M:%S %Z")
+                pub_date = datetime(full_dt.year, full_dt.month, full_dt.day)
+                results.append({"title": title, "published_date": pub_date, "entity": entity})
+            except Exception:
+                continue  # skip one malformed item, don't drop the whole batch
 
         return results
 
-    except:
+    except Exception as e:
+        st.session_state.setdefault("fetch_errors", []).append(
+            f"{entity} [{start_date}–{end_date}]: {type(e).__name__}: {e}"
+        )
         return []
-
 
 # ==============================
 # ESG TAGGING
@@ -535,6 +582,12 @@ if run_button:
         st.success("News Fetching Process Completed Successfully")
         st.warning("Processing ESG Scores...")
     # info_placeholder.success(f"News Fetching Process Completed Successfully")
+
+    if st.session_state.get("fetch_errors"):
+        with st.expander(f"⚠️ {len(st.session_state.fetch_errors)} fetch errors (click to view)"):
+            for err in st.session_state.fetch_errors[:50]:
+                st.text(err)
+        st.session_state.fetch_errors = []
 
 
     if len(all_titles) == 0:
