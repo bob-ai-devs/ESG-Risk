@@ -1,4 +1,3 @@
-````markdown
 # 🏦 AI Model for Real-Time ESG Scoring
 
 A Streamlit-based AI application for **real-time Environmental, Social, and Governance (ESG) monitoring and scoring** of companies/entities using news intelligence, keyword-based ESG classification, AI sentiment analysis, peer benchmarking, historical ESG ratings, and composite scoring.
@@ -1369,7 +1368,6 @@ ESG-Monitoring/
 │
 └── .streamlit/
     └── secrets.toml
-```
 
 ---
 
