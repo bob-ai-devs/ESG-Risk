@@ -1143,9 +1143,9 @@ if run_button:
 
         st.header("📊 ESG Executive Dashboard")
         
-        tabs = st.tabs(main_entity)
+        sub_tabs = st.tabs(main_entity)
 
-        for tab, c in zip(tabs, main_entity):
+        for tab, c in zip(sub_tabs, main_entity):
             with tab:
                 df_entity = df[df["Entity"] == c]
     
