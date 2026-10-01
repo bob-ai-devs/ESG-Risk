@@ -871,33 +871,31 @@ if run_button:
         
         st.subheader("📈 ESG Trend by Entity")
         
-        # Correct chronological month order
-        month_order = {
-            "January": 1,
-            "February": 2,
-            "March": 3,
-            "April": 4,
-            "May": 5,
-            "June": 6,
-            "July": 7,
-            "August": 8,
-            "September": 9,
-            "October": 10,
-            "November": 11,
-            "December": 12
-        }
+        # Convert Month_Label to proper chronological order
+        monthly["_Month_Date"] = pd.to_datetime(
+            monthly["Month_Label"],
+            format="%b %y",
+            errors="coerce"
+        )
         
-        # Create month number for proper sorting
-        monthly["Month_Number"] = monthly["Month_Label"].map(month_order)
+        # Sort by Entity → Year → Month
+        monthly = monthly.sort_values(
+            ["Entity", "_Month_Date"]
+        )
         
         fig = go.Figure()
         
+        # Get chronological month labels
+        month_categories = (
+            monthly[["_Month_Date", "Month_Label"]]
+            .drop_duplicates()
+            .sort_values("_Month_Date")["Month_Label"]
+            .tolist()
+        )
+        
         for entity in monthly["Entity"].unique():
         
-            d = monthly[monthly["Entity"] == entity].copy()
-        
-            # Sort months chronologically
-            d = d.sort_values("Month_Number")
+            d = monthly[monthly["Entity"] == entity].sort_values("_Month_Date")
         
             fig.add_trace(go.Scatter(
                 x=d["Month_Label"],
@@ -918,27 +916,18 @@ if run_button:
             hovermode="x unified",
             template="plotly_white",
         
-            # Force calendar order on the X-axis
+            # Force chronological Jan 25 → Feb 25 → ... → Dec 25 → Jan 26
             xaxis=dict(
                 categoryorder="array",
-                categoryarray=[
-                    "January",
-                    "February",
-                    "March",
-                    "April",
-                    "May",
-                    "June",
-                    "July",
-                    "August",
-                    "September",
-                    "October",
-                    "November",
-                    "December"
-                ]
+                categoryarray=month_categories
             )
         )
         
         st.plotly_chart(fig, width="content")
+        
+        # ==============================
+        # MONTH-WISE ESG NEWS DISTRIBUTION
+        # ==============================
         
         st.subheader("📅 Month-wise ESG News Distribution")
 
