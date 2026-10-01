@@ -567,7 +567,6 @@ if run_button:
 
             curr_progress = min(step / total_days, 1.0) * (c+1)/len(entities)
             curr_time = time.time()
-            st.info([curr_progress, start_time, curr_time])
 
             # Prevent division by zero when curr_progress is 0
             if curr_progress > 0:
