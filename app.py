@@ -568,8 +568,18 @@ if run_button:
             curr_progress = min(step / total_days, 1.0) * (c+1)/len(entities)
             curr_time = time.time()
             st.info([curr_progress, start_time, curr_time])
-            remaining = round((1 - curr_progress) * 100 / ((curr_time - start_time) / curr_progress / 100))
-            progress.progress(total_prog, text=f"{curr_progress * 100}% Complete... {remaining} sec(s) Remaining")
+
+            # Prevent division by zero when curr_progress is 0
+            if curr_progress > 0:
+                elapsed = curr_time - start_time
+                remaining = round((1 - curr_progress) * elapsed / curr_progress)
+            else:
+                remaining = 0
+
+            progress.progress(
+                min(curr_progress, 1.0),
+                text=f"{curr_progress * 100:.1f}% Complete... {remaining} sec(s) Remaining"
+            )
 
         # inner_progress.progress(0)
 
@@ -578,7 +588,6 @@ if run_button:
         step += 7
         # progress.progress(min(step / total_days, 1.0))
         
-
         time.sleep(1)
 
     # remove progress bar
