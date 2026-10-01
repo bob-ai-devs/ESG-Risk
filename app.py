@@ -533,9 +533,11 @@ if run_button:
 
     inner_area = st.empty()
 
-    progress = st.progress(0)
+    progress = st.progress(0, text="Please wait...")
 
     step = 0
+
+    start_time = time.time()
 
     while current <= end_date:
 
@@ -545,14 +547,14 @@ if run_button:
             week_end = end_date
 
         with inner_area.container():
-            inner_progress = st.progress(0)
+            # inner_progress = st.progress(0)
             status = st.empty()
 
         for c, entity in enumerate(entities):
 
             # for i, flag in enumerate(esg_keywords):
 
-            inner_progress.progress((c+1)/len(entities))
+            # inner_progress.progress((c+1)/len(entities))
 
             info_placeholder_status.code(f"Fetching News for: {entity} --- Dated from: {current} to: {week_end}")
 
@@ -568,7 +570,11 @@ if run_button:
         current = week_end + timedelta(days=1)
 
         step += 7
-        progress.progress(min(step / total_days, 1.0))
+        # progress.progress(min(step / total_days, 1.0))
+        curr_progress = min(step / total_days, 1.0) * (c+1)/len(entities)
+        curr_time = time.time()
+        remaining = round((1 - curr_progress) * 100 / ((curr_time - start_time) / curr_progress / 100))
+        progress.progress(total_prog, text=f"{curr_progress * 100}% Complete... {remaining} sec(s) Remaining")
 
         time.sleep(1)
 
@@ -871,42 +877,46 @@ if run_button:
         
         st.subheader("📈 ESG Trend by Entity")
         
-        # Convert Month_Label to proper chronological order
+        # Convert Month_Label to datetime
         monthly["_Month_Date"] = pd.to_datetime(
-            monthly["Month_Label"],
-            format="%b %y",
+            monthly["Month_Label"].astype(str).str.strip(),
             errors="coerce"
         )
         
-        # Sort by Entity → Year → Month
+        # Check for any labels that could not be converted
+        invalid_months = monthly.loc[
+            monthly["_Month_Date"].isna(),
+            "Month_Label"
+        ].dropna().unique()
+        
+        if len(invalid_months) > 0:
+            st.warning(f"Unable to parse month labels: {list(invalid_months)}")
+        
+        # Sort chronologically
         monthly = monthly.sort_values(
             ["Entity", "_Month_Date"]
         )
         
         fig = go.Figure()
         
-        # Get chronological month labels
-        month_categories = (
-            monthly[["_Month_Date", "Month_Label"]]
-            .drop_duplicates()
-            .sort_values("_Month_Date")["Month_Label"]
-            .tolist()
-        )
-        
         for entity in monthly["Entity"].unique():
         
-            d = monthly[monthly["Entity"] == entity].sort_values("_Month_Date")
+            d = monthly[
+                monthly["Entity"] == entity
+            ].sort_values("_Month_Date")
         
             fig.add_trace(go.Scatter(
-                x=d["Month_Label"],
+                x=d["_Month_Date"],
                 y=d["ESG_Score"],
                 mode="lines+markers",
                 name=entity,
                 customdata=d[["Headline"]],
         
                 hovertemplate=
+                "<b>Month:</b> %{x|%b %y}<br>" +
                 "<b>Total Articles:</b> %{customdata[0]} - " +
-                "<b>Avg ESG Score:</b> %{y:.2f}<br>"
+                "<b>Avg ESG Score:</b> %{y:.2f}<br>" +
+                "<extra></extra>"
             ))
         
         fig.update_layout(
@@ -916,18 +926,15 @@ if run_button:
             hovermode="x unified",
             template="plotly_white",
         
-            # Force chronological Jan 25 → Feb 25 → ... → Dec 25 → Jan 26
+            # Display as Jan 25, Feb 25, Mar 25...
             xaxis=dict(
-                categoryorder="array",
-                categoryarray=month_categories
+                type="date",
+                tickformat="%b %y",
+                dtick="M1"
             )
         )
         
         st.plotly_chart(fig, width="content")
-        
-        # ==============================
-        # MONTH-WISE ESG NEWS DISTRIBUTION
-        # ==============================
         
         st.subheader("📅 Month-wise ESG News Distribution")
 
