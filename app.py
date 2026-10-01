@@ -66,7 +66,8 @@ if "error_display" not in st.session_state:
 
 st.set_page_config(
     page_title="AI Model for Real-Time ESG Scoring",
-    layout="wide"
+    layout="wide",
+    page_icon="🌏"
 )
 
 
