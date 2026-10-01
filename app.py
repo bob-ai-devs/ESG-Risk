@@ -939,6 +939,7 @@ if run_button:
                 customdata=d[["Headline"]],
         
                 hovertemplate=
+                "<b>Entity:</b> " + entity + "<br>" +
                 "<b>Month:</b> %{x|%b %y}<br>" +
                 "<b>Total Articles:</b> %{customdata[0]} - " +
                 "<b>Avg ESG Score:</b> %{y:.2f}<br>" +
