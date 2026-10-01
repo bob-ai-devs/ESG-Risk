@@ -541,7 +541,7 @@ if run_button:
 
     while current <= end_date:
 
-        week_end = current + timedelta(days=7)
+        week_end = current + timedelta(days=6)
 
         if week_end > end_date:
             week_end = end_date
