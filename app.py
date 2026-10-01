@@ -519,8 +519,10 @@ if run_button:
 
     info_placeholder = st.empty()
 
+    peer_list = list(set(entities) - set(entities_copy))
+
     if peer:
-        info_placeholder.info(f"Monitoring {entity_len} entity / entities: {", ".join(entities_copy)} and their peers (Total: {len(entities) - 1}): {", ".join(peer_entities)}")
+        info_placeholder.info(f"Monitoring {entity_len} entity / entities: {", ".join(entities_copy)} and their peers (Total: {len(entities) - len(entities_copy)}): {", ".join(peer_list)}")
     else:
         info_placeholder.info(f"Monitoring {entity_len} entity / entities: {", ".join(entities_copy)}")
 
