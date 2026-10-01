@@ -976,61 +976,68 @@ if run_button:
         # ALERT DETECTION
         # ==============================
 
-        # st.subheader("🚨 ESG Alert Monitor")
+        st.subheader("🚨 ESG Alert Monitor")
 
-        for c in main_entity:
+        st.header("📊 ESG Executive Dashboard")
+        
+        alt_tabs = st.tabs(main_entity)
 
+        for tab, c in zip(alt_tabs, main_entity):
+            with tab:
 
-            st.markdown(f"### 🏦 {c}")
-
-            df_entity = df[df["Entity"] == c]
-
-            alerts = df_entity[df_entity["ESG_Score"] < -0.5]
-
-            if len(alerts) > 0:
-
-                st.warning(f"Potential ESG risk news detected for {c}")
-
-                st.dataframe(
-                    alerts[["Entity","Headline","ESG_Score"]],
-                    width='content'
-                )
-
-            else:
-                st.success("No major alerts detected")
+        # for c in main_entity:
 
 
-
-            # ==============================
-            # TOP NEWS
-            # ==============================
-
-            st.subheader("Top ESG News")
-
-            col1, col2 = st.columns(2)
-
-            pos = df_entity.sort_values("ESG_Score", ascending=False).head(5)
-            neg = df_entity.sort_values("ESG_Score").head(5)
-
-            with col1:
-
-                st.write("Highest Rated ESG News")
-
-                st.dataframe(
-                    pos[["Entity","Headline","ESG_Score"]],
-                    width='content'
-                )
-
-            with col2:
-
-                st.write("Lowest Rated ESG News")
-
-                st.dataframe(
-                    neg[["Entity","Headline","ESG_Score"]],
-                    width='content'
-                )
-
-            st.divider()
+                st.markdown(f"### 🏦 {c}")
+    
+                df_entity = df[df["Entity"] == c]
+    
+                alerts = df_entity[df_entity["ESG_Score"] < -0.5]
+    
+                if len(alerts) > 0:
+    
+                    st.warning(f"Potential ESG risk news detected for {c}")
+    
+                    st.dataframe(
+                        alerts[["Entity","Headline","ESG_Score"]],
+                        width='content'
+                    )
+    
+                else:
+                    st.success("No major alerts detected")
+    
+    
+    
+                # ==============================
+                # TOP NEWS
+                # ==============================
+    
+                st.subheader("Top ESG News")
+    
+                col1, col2 = st.columns(2)
+    
+                pos = df_entity.sort_values("ESG_Score", ascending=False).head(5)
+                neg = df_entity.sort_values("ESG_Score").head(5)
+    
+                with col1:
+    
+                    st.write("Highest Rated ESG News")
+    
+                    st.dataframe(
+                        pos[["Entity","Headline","ESG_Score"]],
+                        width='content'
+                    )
+    
+                with col2:
+    
+                    st.write("Lowest Rated ESG News")
+    
+                    st.dataframe(
+                        neg[["Entity","Headline","ESG_Score"]],
+                        width='content'
+                    )
+    
+                st.divider()
 
 
 
