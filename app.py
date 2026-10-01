@@ -566,27 +566,34 @@ if run_button:
             time.sleep(1)
 
             # curr_progress = min(step / total_days, 1.0) * (c+1)/len(entities)
+
+            completed_days = step - 7
+            days_in_period = (week_end - current).days + 1
+            entity_progress = (c + 1) / len(entities)
+
             curr_progress = min(
-                (((step - 7) * len(entities)) + (c + 1)) /
-                (total_days * len(entities)),
+                (
+                    completed_days +
+                    (days_in_period * entity_progress)
+                ) / total_days,
                 1.0
             )
-            
+
             curr_time = time.time()
+            elapsed = curr_time - start_time
             remaining = float("inf")
-            
-            if curr_progress > 0:
-                elapsed = curr_time - start_time
+
+            if curr_progress > 0 and elapsed > 0:
                 remaining = round(
-                    (1 - curr_progress) * elapsed / curr_progress
+                    elapsed * (1 - curr_progress) / curr_progress
                 )
-            
+
             # st.info(f"{step} / {total_days} * {c+1} / {len(entities)}, Start = {start_time}, Curr = {curr_time}, Prg = {curr_progress}, Rem = {remaining}")
             progress.progress(
                 curr_progress,
                 text=f"{curr_progress * 100:.2f}% Complete... {remaining} sec(s) Remaining"
             )
-            
+
         # inner_progress.progress(0)
 
         current = week_end + timedelta(days=1)
