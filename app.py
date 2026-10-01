@@ -566,12 +566,12 @@ if run_button:
             time.sleep(1)
 
             # curr_progress = min(step / total_days, 1.0) * (c+1)/len(entities)
-            curr_progress = min(((step * len(entities)) + (c + 1)) / (total_days * len(entities)) , 1.0)
+            curr_progress = min(((step * len(entities)) + c) / (total_days * len(entities)) , 1.0)
             curr_time = time.time()
             remaining = float("inf")
             if curr_progress != 0:
                 remaining = round((1 - curr_progress) * 100 / ((curr_time - start_time) / curr_progress / 100))
-            st.info(f"{step} / {total_days} * {c+1} / {len(entities)}, Start = {start_time}, Curr = {curr_time}, Prg = {curr_progress}, Rem = {remaining}")
+            # st.info(f"{step} / {total_days} * {c+1} / {len(entities)}, Start = {start_time}, Curr = {curr_time}, Prg = {curr_progress}, Rem = {remaining}")
             progress.progress(curr_progress, text=f"{curr_progress * 100}% Complete... {remaining} sec(s) Remaining")
 
         # inner_progress.progress(0)
