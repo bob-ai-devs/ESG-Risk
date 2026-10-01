@@ -570,7 +570,7 @@ if run_button:
             curr_time = time.time()
             remaining = float("inf")
             if curr_progress != 0:
-                remaining = round((1 - curr_progress) * 100 / ((curr_time - start_time) / curr_progress / 100))
+                remaining = round((1 - curr_progress) / ((curr_time - start_time) / curr_progress ))
             # st.info(f"{step} / {total_days} * {c+1} / {len(entities)}, Start = {start_time}, Curr = {curr_time}, Prg = {curr_progress}, Rem = {remaining}")
             progress.progress(curr_progress, text=f"{curr_progress * 100}% Complete... {remaining} sec(s) Remaining")
 
