@@ -978,7 +978,7 @@ if run_button:
 
         st.subheader("🚨 ESG Alert Monitor")
 
-        st.header("📊 ESG Executive Dashboard")
+        # st.header("📊 ESG Executive Dashboard")
         
         alt_tabs = st.tabs(main_entity)
 
