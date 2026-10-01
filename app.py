@@ -1141,93 +1141,97 @@ if run_button:
 
 
 
-        # st.header("📊 ESG Executive Dashboard")
-        for c in main_entity:
-            df_entity = df[df["Entity"] == c]
+        st.header("📊 ESG Executive Dashboard")
+        
+        tabs = st.tabs(main_entity)
 
-            lower = -0.2
-
-            upper = 0.2
-
-            if peer:
-                esg_list = entity_stats[entity_stats["Entity"].isin([c] + entity_dict[c])]["Avg ESG Score"]
-
-                avg_esg = esg_list.mean()
-
-                scores = esg_list[esg_list != 0]
-
-                se = scores.std(ddof=1) / np.sqrt(len(scores))
-                z = 2.576
-
-                lower = avg_esg - z*se
-                upper = avg_esg + z*se
-
-
-
-
-            st.subheader(f"🏦 {c} ESG Dashboard")
-
-            avg_env = df_entity["env"].mean()
-            avg_soc = df_entity["soc"].mean()
-            avg_gov = df_entity["gov"].mean()
-
-            overall = (avg_env + avg_soc + avg_gov) / 3
-
-            st.markdown("<div style='margin-top:10px'></div>", unsafe_allow_html=True)
-
-            col1,col2,col3,col4 = st.columns(4)
-
-            col1.metric("Environment Score", round(avg_env,4))
-            col2.metric("Social Score", round(avg_soc,4))
-            col3.metric("Governance Score", round(avg_gov,4))
-            col4.metric("Overall ESG Score", round(overall,4))
-
-
-
-            # ==============================
-            # ESG RISK GAUGE
-            # ==============================
-
-            fig = go.Figure()
-
-            # Gauge
-            fig.add_trace(go.Indicator(
-                mode="gauge",
-                value=overall,
-                domain={'x': [0, 1], 'y': [0, 1]},
-                title={'text': "Portfolio ESG Sentiment"},
-                gauge={
-                    'axis': {'range': [-1,1]},
-                    'bar': {'color': "darkgreen"},
-                    'steps': [
-                        {'range': [-1, lower], 'color': "#ff4d4d"},
-                        {'range': [lower, upper], 'color': "#ffd633"},
-                        {'range': [upper, 1], 'color': "#66cc66"}
-                    ]
-                }
-            ))
-
-            # Fixed value display
-            fig.add_trace(go.Indicator(
-                mode="number",
-                value=overall,
-                number={'font': {'size': 60}},
-                domain={'x': [0.35, 0.65], 'y': [0.35, 0.55]}
-            ))
-
-            fig.add_annotation(
-                x=0.5,
-                y=0.25,
-                text=f"Lower Bound: {lower:.4f} - Upper Bound: {upper:.4f}",
-                showarrow=False,
-                font=dict(size=20)
-            )
-
-            fig.update_layout(
-                margin=dict(l=20, r=20, t=60, b=20)
-            )
-
-            st.plotly_chart(fig, width='content', key=c)
+        for tab, c in zip(tabs, main_entity):
+            with tab:
+                df_entity = df[df["Entity"] == c]
+    
+                lower = -0.2
+    
+                upper = 0.2
+    
+                if peer:
+                    esg_list = entity_stats[entity_stats["Entity"].isin([c] + entity_dict[c])]["Avg ESG Score"]
+    
+                    avg_esg = esg_list.mean()
+    
+                    scores = esg_list[esg_list != 0]
+    
+                    se = scores.std(ddof=1) / np.sqrt(len(scores))
+                    z = 2.576
+    
+                    lower = avg_esg - z*se
+                    upper = avg_esg + z*se
+    
+    
+    
+    
+                st.subheader(f"🏦 {c} ESG Dashboard")
+    
+                avg_env = df_entity["env"].mean()
+                avg_soc = df_entity["soc"].mean()
+                avg_gov = df_entity["gov"].mean()
+    
+                overall = (avg_env + avg_soc + avg_gov) / 3
+    
+                st.markdown("<div style='margin-top:10px'></div>", unsafe_allow_html=True)
+    
+                col1,col2,col3,col4 = st.columns(4)
+    
+                col1.metric("Environment Score", round(avg_env,4))
+                col2.metric("Social Score", round(avg_soc,4))
+                col3.metric("Governance Score", round(avg_gov,4))
+                col4.metric("Overall ESG Score", round(overall,4))
+    
+    
+    
+                # ==============================
+                # ESG RISK GAUGE
+                # ==============================
+    
+                fig = go.Figure()
+    
+                # Gauge
+                fig.add_trace(go.Indicator(
+                    mode="gauge",
+                    value=overall,
+                    domain={'x': [0, 1], 'y': [0, 1]},
+                    title={'text': "Portfolio ESG Sentiment"},
+                    gauge={
+                        'axis': {'range': [-1,1]},
+                        'bar': {'color': "darkgreen"},
+                        'steps': [
+                            {'range': [-1, lower], 'color': "#ff4d4d"},
+                            {'range': [lower, upper], 'color': "#ffd633"},
+                            {'range': [upper, 1], 'color': "#66cc66"}
+                        ]
+                    }
+                ))
+    
+                # Fixed value display
+                fig.add_trace(go.Indicator(
+                    mode="number",
+                    value=overall,
+                    number={'font': {'size': 60}},
+                    domain={'x': [0.35, 0.65], 'y': [0.35, 0.55]}
+                ))
+    
+                fig.add_annotation(
+                    x=0.5,
+                    y=0.25,
+                    text=f"Lower Bound: {lower:.4f} - Upper Bound: {upper:.4f}",
+                    showarrow=False,
+                    font=dict(size=20)
+                )
+    
+                fig.update_layout(
+                    margin=dict(l=20, r=20, t=60, b=20)
+                )
+    
+                st.plotly_chart(fig, width='content', key=c)
 
 
 
