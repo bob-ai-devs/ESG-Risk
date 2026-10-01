@@ -563,12 +563,12 @@ if run_button:
 
             all_titles.extend(titles)
 
+            time.sleep(1)
+
             curr_progress = min(step / total_days, 1.0) * (c+1)/len(entities)
             curr_time = time.time()
             remaining = round((1 - curr_progress) * 100 / ((curr_time - start_time) / curr_progress / 100))
             progress.progress(total_prog, text=f"{curr_progress * 100}% Complete... {remaining} sec(s) Remaining")
-
-            time.sleep(1)
 
         # inner_progress.progress(0)
 
