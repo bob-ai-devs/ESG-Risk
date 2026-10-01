@@ -633,7 +633,7 @@ if run_button:
         st.warning("No news found")
         st.stop()
 
-    esg_df = pd.read_csv("ESG/ESG_Ratings.csv")
+    esg_df = pd.read_csv("ESG/ESG_Ratings_Updated.csv")
 
     # Step 1: Fast regex match
     pattern = "|".join(re.escape(name) for name in main_entity)
@@ -1561,7 +1561,7 @@ if st.session_state.analysis_clicked:
             st.session_state.error_display = True
 
 
-    esg_df = pd.read_csv("ESG/ESG_Ratings.csv")
+    esg_df = pd.read_csv("ESG/ESG_Ratings_Updated.csv")
 
     max_entity = st.slider("Select Maximum Number of Entities for check", 1, len(esg_df), st.session_state.max_entity, key="maximum_entity")
 
