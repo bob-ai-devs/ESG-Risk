@@ -565,7 +565,8 @@ if run_button:
 
             time.sleep(1)
 
-            curr_progress = min(step / total_days, 1.0) * (c+1)/len(entities)
+            # curr_progress = min(step / total_days, 1.0) * (c+1)/len(entities)
+            curr_progress = min(((step * len(entities)) + (c + 1)) / (total_days * len(entities)) , 1.0)
             curr_time = time.time()
             remaining = float("inf")
             if curr_progress != 0:
