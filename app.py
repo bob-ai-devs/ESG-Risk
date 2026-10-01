@@ -570,7 +570,7 @@ if run_button:
             remaining = float("inf")
             if curr_progress != 0:
                 remaining = round((1 - curr_progress) * 100 / ((curr_time - start_time) / curr_progress / 100))
-            progress.progress(total_prog, text=f"{curr_progress * 100}% Complete... {remaining} sec(s) Remaining")
+            progress.progress(curr_progress, text=f"{curr_progress * 100}% Complete... {remaining} sec(s) Remaining")
 
         # inner_progress.progress(0)
 
