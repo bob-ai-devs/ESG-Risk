@@ -535,7 +535,7 @@ if run_button:
 
     progress = st.progress(0, text="Please wait...")
 
-    step = 0
+    step = 7
 
     start_time = time.time()
 
@@ -567,7 +567,7 @@ if run_button:
 
             # curr_progress = min(step / total_days, 1.0) * (c+1)/len(entities)
             curr_progress = min(
-                ((step * len(entities)) + (c + 1)) /
+                (((step - 7) * len(entities)) + (c + 1)) /
                 (total_days * len(entities)),
                 1.0
             )
