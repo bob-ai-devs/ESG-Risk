@@ -868,45 +868,78 @@ if run_button:
         # ==============================
         # MULTI COMPANY TREND CHART
         # ==============================
-
+        
         st.subheader("📈 ESG Trend by Entity")
-
+        
+        # Correct chronological month order
+        month_order = {
+            "January": 1,
+            "February": 2,
+            "March": 3,
+            "April": 4,
+            "May": 5,
+            "June": 6,
+            "July": 7,
+            "August": 8,
+            "September": 9,
+            "October": 10,
+            "November": 11,
+            "December": 12
+        }
+        
+        # Create month number for proper sorting
+        monthly["Month_Number"] = monthly["Month_Label"].map(month_order)
+        
         fig = go.Figure()
-
+        
         for entity in monthly["Entity"].unique():
-
-            d = monthly[monthly["Entity"] == entity]
-
+        
+            d = monthly[monthly["Entity"] == entity].copy()
+        
+            # Sort months chronologically
+            d = d.sort_values("Month_Number")
+        
             fig.add_trace(go.Scatter(
-
                 x=d["Month_Label"],
                 y=d["ESG_Score"],
                 mode="lines+markers",
                 name=entity,
                 customdata=d[["Headline"]],
-
+        
                 hovertemplate=
-
-                # "<b>Entity:</b> " + entity + "<br>" +
-                # "<b>Month:</b> %{x}<br>" +
-                "  <b>Total Articles:</b> %{customdata[0]} - "+
+                "<b>Total Articles:</b> %{customdata[0]} - " +
                 "<b>Avg ESG Score:</b> %{y:.2f}<br>"
-                # +
-                # "<extra></extra>"
-
             ))
-
+        
         fig.update_layout(
-
             title="Monthly ESG Intelligence Trend",
             xaxis_title="Month",
             yaxis_title="Average ESG Score",
             hovermode="x unified",
-            template="plotly_white"
+            template="plotly_white",
+        
+            # Force calendar order on the X-axis
+            xaxis=dict(
+                categoryorder="array",
+                categoryarray=[
+                    "January",
+                    "February",
+                    "March",
+                    "April",
+                    "May",
+                    "June",
+                    "July",
+                    "August",
+                    "September",
+                    "October",
+                    "November",
+                    "December"
+                ]
+            )
         )
-
-        st.plotly_chart(fig, width='content')
-
+        
+        st.plotly_chart(fig, width="content")
+        
         st.subheader("📅 Month-wise ESG News Distribution")
 
         st.table(monthly_esg)
