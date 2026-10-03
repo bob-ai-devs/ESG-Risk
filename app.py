@@ -1626,7 +1626,7 @@ if st.session_state.analysis_clicked:
                     already_selected.append(row)
                     break
 
-            st.info(esg_df.iloc[row])
+            # st.info(esg_df.iloc[row])
             
             name = esg_df["Name"].iloc[row]
 
