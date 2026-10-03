@@ -182,9 +182,9 @@ def get_sentiment(df):
 @st.cache_data
 def load_keywords():
 
-    env = pd.read_csv("ESG/env_keywords.csv")["keyword"].str.lower().tolist()
-    soc = pd.read_csv("ESG/soc_keywords.csv")["keyword"].str.lower().tolist()
-    gov = pd.read_csv("ESG/gov_keywords.csv")["keyword"].str.lower().tolist()
+    env = pd.read_csv("ESG/env_keywords_enhanced.csv")["keyword"].str.lower().tolist()
+    soc = pd.read_csv("ESG/soc_keywords_enhanced.csv")["keyword"].str.lower().tolist()
+    gov = pd.read_csv("ESG/gov_keywords_enhanced.csv")["keyword"].str.lower().tolist()
 
     return set(env), set(soc), set(gov)
 
@@ -200,9 +200,9 @@ DATA_FOLDER = "ESG/"
 
 # File mapping
 file_map = {
-    "Environment": "env_keywords.csv",
-    "Social": "soc_keywords.csv",
-    "Governance": "gov_keywords.csv"
+    "Environment": "env_keywords_enhanced.csv",
+    "Social": "soc_keywords_enhanced.csv",
+    "Governance": "gov_keywords_enhanced.csv"
 }
 
 
