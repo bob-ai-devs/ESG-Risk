@@ -530,6 +530,7 @@ if run_button:
     all_titles = []
 
     current = start_date
+    st.info([start_date, end_date])
     total_days = (end_date - start_date).days or 1
 
     info_placeholder_status = st.empty()
