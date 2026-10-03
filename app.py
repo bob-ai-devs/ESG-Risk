@@ -1541,7 +1541,7 @@ if st.session_state.analysis_clicked:
             styled_df = analysis_file.style.apply(highlight_diff, axis=1)
 
             # Show in Streamlit
-            st.dataframe(styled_df, width='content', column_config={
+            st.dataframe(styled_df, width='stretch', column_config={
                 'CRISIL Score (Lagging)': st.column_config.NumberColumn(width="small"),
                 'AI Sentiment Score (Leading)': st.column_config.NumberColumn(width="small"),
                 'Composite Score': st.column_config.NumberColumn(width="small"),
