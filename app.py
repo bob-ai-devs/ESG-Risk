@@ -231,7 +231,7 @@ with st.sidebar:
 
             df.index += 1
 
-            st.dataframe(df, width='content')
+            st.dataframe(df, width='stretch')
 
             with open(file_path, "rb") as f:
                 st.download_button(
