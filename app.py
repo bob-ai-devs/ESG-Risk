@@ -530,7 +530,7 @@ if run_button:
     all_titles = []
 
     current = start_date
-    st.info([start_date, end_date])
+    # st.info([start_date, end_date])
     total_days = (end_date - start_date).days or 1
 
     info_placeholder_status = st.empty()
@@ -1626,7 +1626,8 @@ if st.session_state.analysis_clicked:
                     already_selected.append(row)
                     break
 
-
+            st.info(esg_df.iloc[row])
+            
             name = esg_df["Name"].iloc[row]
 
             val = esg_df["ESGRating"].iloc[row]
@@ -1668,7 +1669,7 @@ if st.session_state.analysis_clicked:
             all_titles = []
 
             current = start_date
-            st.info([start_date, end_date])
+            # st.info([start_date, end_date])
             total_days = (end_date - start_date).days or 1
 
             progress = st.progress(0)
